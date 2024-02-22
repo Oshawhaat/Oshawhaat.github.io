@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Alan's Test Game</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            canvas {
+                background: #eee;
+                display: block;
+                margin: 0 auto;
+            }
+            button {
+                display: block
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="480" height="320"></canvas>
+        <button id="runButton">Start game</button>
+
+        <script>
+            const canvas = document.getElementById("myCanvas");
+            const ctx = canvas.getContext("2d");
+
+            let started = false;
+            let ball_list = [];
+
+            class Ball {
+                constructor() {
+                    this.radius = 15;
+                    this.x = 50;
+                    this.y = 100;
+                    this.dx = 3;
+                    this.dy = -2.5;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                    ctx.fillStyle = "#00ff00";
+                    ctx.fill();
+                    ctx.closePath();
+
+                    this.x += this.dx;
+                    this.y += this.dy;
+
+                    if (this.x > canvas.width - this.radius || this.x < this.radius) {
+                        this.dx = -this.dx;
+                    }
+                    if (this.y > canvas.height - this.radius || this.y < this.radius) {
+                        this.dy = -this.dy;
+                    }
+                }
+            }
+
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ball_list.forEach(ball => {
+                    ball.draw();
+                });
+            }
+
+            function startGame() {
+                if (!started) {
+                    started = true;
+                    const interval = setInterval(draw, 10);
+                }
+            }
+
+            function addBall() {
+                ball_list.push(new Ball());
+            }
+
+            document.getElementById("runButton").addEventListener("click", function () {
+                startGame();
+                addBall();
+            });
+
+        </script>
+    </body>
+</html>
