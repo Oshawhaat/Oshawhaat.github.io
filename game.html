@@ -25,7 +25,8 @@
             const canvas = document.getElementById("myCanvas");
             const ctx = canvas.getContext("2d");
 
-            const alpha_decay = .003;
+            const alphaDecay = .999;
+            const speedDecay = .999;
 
             let started = false;
             let ball_list = [];
@@ -35,12 +36,12 @@
                     this.radius = randNum(10, 20);
                     this.x = canvas.width / 2;
                     this.y = canvas.height / 2;
-                    this.dx = Math.random() * 4 - 2;
-                    this.dy = Math.random() * 4 - 2;
-                    this.r = randNum(0, 255);
-                    this.g = randNum(0, 255);
-                    this.b = randNum(0, 255);
-                    this.a = randNum(.5, .75);
+                    this.dx = Math.random() + 1 * (Math.random() <= .5 ? 1 : -1);
+                    this.dy = Math.random() + 1 * (Math.random() <= .5 ? 1 : -1);
+                    this.r = randNum(100, 255);
+                    this.g = randNum(100, 255);
+                    this.b = randNum(100, 255);
+                    this.a = randNum(.6, .9);
                 }
 
                 draw() {
@@ -50,7 +51,9 @@
                     ctx.fill();
                     ctx.closePath();
 
-                    this.a -= alpha_decay
+                    this.dx *= speedDecay;
+                    this.dy *= speedDecay;
+                    this.a *= alphaDecay;
 
                     this.x += this.dx;
                     this.y += this.dy;
