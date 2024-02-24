@@ -4,11 +4,12 @@
         <title>Alan's Test Game</title>
         <style>
             * {
+                background-color: #434242;
                 padding: 0;
                 margin: 0;
             }
             canvas {
-                background: #eee;
+                background: #000000;
                 display: block;
                 margin: 0 auto;
             }
@@ -18,7 +19,7 @@
         </style>
     </head>
     <body>
-        <canvas id="myCanvas" width="480" height="320"></canvas>
+        <canvas id="myCanvas" width="900" height="700"></canvas>
         <button id="runButton">Add ball</button>
 
         <script>
@@ -69,10 +70,10 @@
 
 
             function randNum(min, max, int = false) {
-                var diff = max - min
-                var num = (Math.random() * diff) + min
-                if (int) {num = Math.floor(num)}
-                return num
+                var diff = max - min;
+                var num = (Math.random() * diff) + min;
+                if (int) {num = Math.floor(num);}
+                return num;
             }
 
 
