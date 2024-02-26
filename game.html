@@ -37,12 +37,14 @@
                     this.radius = randNum(10, 20);
                     this.x = canvas.width / 2;
                     this.y = canvas.height / 2;
-                    this.dx = (Math.random() + 1) * (Math.random() <= .5 ? 1 : -1);
-                    this.dy = (Math.random() + 1) * (Math.random() <= .5 ? 1 : -1);
+                    this.dx = 0;
+                    this.dy = 0;
                     this.r = randNum(100, 255);
                     this.g = randNum(100, 255);
                     this.b = randNum(100, 255);
-                    this.a = randNum(.6, .9);
+                    this.a = randNum(.5, .75);
+
+                    this.setVelocity();
                 }
 
                 draw() {
@@ -64,6 +66,14 @@
                     }
                     if (this.y > canvas.height - this.radius || this.y < this.radius) {
                         this.dy = -this.dy;
+                    }
+                }
+
+                setVelocity() {
+                    this.dx = (Math.random() * 2) * (Math.random() <= .5 ? 1 : -1);
+                    this.dy = (Math.random() * 2) * (Math.random() <= .5 ? 1 : -1);
+                    if (Math.sqrt((this.dx ** 2) + (this.dy ** 2)) < 0.2) {
+                        setVelocity();
                     }
                 }
             }
