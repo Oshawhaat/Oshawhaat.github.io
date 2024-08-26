@@ -18,7 +18,7 @@
             }
         </style>
     </head>
-    <body>
+    <body onmousemove="updateMousePos(event)" onmousedown="setMouseDown(true)" onmouseup="setMouseDown(false)">
         <canvas id="myCanvas" width="900" height="700"></canvas>
         <button id="runButton">Add ball</button>
 
@@ -32,11 +32,15 @@
             let started = false;
             let ball_list = [];
 
+            let mouseDown = false;
+            let mouseX = 0;
+            let mouseY = 0;
+
             class Ball {
                 constructor() {
                     this.radius = randNum(10, 20);
-                    this.x = canvas.width / 2;
-                    this.y = canvas.height / 2;
+                    this.x = mouseX;
+                    this.y = mouseY;
                     this.dx = 0;
                     this.dy = 0;
                     this.r = randNum(100, 255);
@@ -48,6 +52,10 @@
                 }
 
                 draw() {
+                    if (this.a < .1) {
+                        delFromList(this)
+                    }
+
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
                     ctx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
@@ -79,6 +87,17 @@
             }
 
 
+            function updateMousePos(event) {
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            }
+
+
+            function setMouseDown(down) {
+                mouseDown = down;
+            }
+
+
             function randNum(min, max, int = false) {
                 var diff = max - min;
                 var num = (Math.random() * diff) + min;
@@ -87,7 +106,19 @@
             }
 
 
+            function delFromList(value) {
+                for ( var i = ball_list.length - 1; i >= 0; i-- ) {
+                    if ( ball_list[i] === value ) {
+                        ball_list.remove(i)
+                    }
+                }
+            }
+
+
             function draw() {
+                if (mouseDown)
+                    addBall();
+
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ball_list.forEach(ball => {
                     ball.draw();
@@ -95,10 +126,11 @@
             }
 
             function startGame() {
-                if (!started) {
-                    started = true;
-                    const interval = setInterval(draw, 10);
-                }
+
+                started = true;
+                const interval = setInterval(draw, 10);
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
 
             function addBall() {
@@ -106,9 +138,11 @@
             }
 
             document.getElementById("runButton").addEventListener("click", function () {
-                startGame();
                 addBall();
             });
+            window.onload = function() {
+                startGame()
+            }
 
         </script>
     </body>
